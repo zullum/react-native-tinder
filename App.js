@@ -1,5 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs(); // ignore all logs
 import { AuthProvider } from "./hooks/useAuth";
 import StackNavigator from "./StackNavigator";
 
