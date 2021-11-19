@@ -12,7 +12,6 @@ const ModalScreen = () => {
   const [image, setImage] = useState(null);
   const [job, setJob] = useState(null);
   const [age, setAge] = useState(null);
-  const [profiles, setProfiles] = useState([]);
 
   const incompleteForm = !image || !job || !age;
 
