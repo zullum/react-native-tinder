@@ -158,7 +158,7 @@ const HomeScreen = () => {
               [user.uid]: loggedInProfile,
               [userSwiped.id]: userSwiped,
             },
-            userMatched: [user.uid, userSwiped.id],
+            usersMatched: [user.uid, userSwiped.id],
             timestamp: serverTimestamp(),
           });
 
