@@ -4,15 +4,35 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import useAuth from "../hooks/useAuth";
 import getMatchedUserInfo from "../lib/getMatchedUserInfo";
 import tw from "tailwind-rn";
+import {
+  collection,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
 const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [matchedUserInfo, setMatchedUserInfo] = useState(null);
+  const [lastMessage, setLastMessage] = useState("");
 
   useEffect(() => {
     setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user.uid));
   }, [matchDetails, user]);
+
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "matches", matchDetails.id, "messages"),
+        orderBy("timestamp", "desc"),
+        limit(1)
+      ),
+      (snapshot) => setLastMessage(snapshot.docs[0]?.data().message)
+    );
+  }, [matchDetails, db]);
 
   return (
     <TouchableOpacity
@@ -33,7 +53,7 @@ const ChatRow = ({ matchDetails }) => {
         <Text style={tw("text-lg font-semibold")}>
           {matchedUserInfo?.displayName}
         </Text>
-        <Text>Say Hi!</Text>
+        <Text>{lastMessage || "Say Hi!"}</Text>
       </View>
     </TouchableOpacity>
   );
